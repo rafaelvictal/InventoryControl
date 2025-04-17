@@ -16,4 +16,5 @@ jobs:
     - name: Build
       run: dotnet build ./BackEnd/InventoryControl.API --no-restore
     - name: Test
-      run: dotnet test ./BackEnd/InventoryControl.Test --no-build
+      run: dotnet test ./BackEnd/InventoryControl.Test/InventoryControl.Test.csproj --no-build
+
