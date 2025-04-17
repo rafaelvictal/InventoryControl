@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/rafaelvictal/InventoryControl/actions/workflows/dotnet.yml/badge.svg)](https://github.com/rafaelvictal/InventoryControl/actions)[![Latest Release](https://img.shields.io/github/v/release/rafaelvictal/InventoryControl)](https://github.com/rafaelvictal/InventoryControl/releases)
+[![Build Status](https://github.com/rafaelvictal/InventoryControl/actions/workflows/dotnet.yml/badge.svg)](https://github.com/rafaelvictal/InventoryControl/actions) [![Latest Release](https://img.shields.io/github/v/release/rafaelvictal/InventoryControl)](https://github.com/rafaelvictal/InventoryControl/releases)
 
 # Inventory Control System
 
