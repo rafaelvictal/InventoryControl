@@ -21,7 +21,8 @@ const schema = yup.object().shape({
     .typeError("Quantity must be a number greater than 0")
     .positive("Quantity must be greater than 0")
     .integer("Quantity must be an integer")
-    .required("Quantity is required"),
+    .required("Quantity is required")
+    .max(9999, "Maximum allowed is 9999"),
 });
 
 export default function MovementForm() {
