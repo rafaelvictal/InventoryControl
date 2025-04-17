@@ -1,11 +1,11 @@
 # Inventory Control System
 
-Sistema de controle de estoque.
-Inclui backend em .NET 8 com SQLite e frontend em React + Material UI.
+A simple inventory control system.  
+Includes a .NET 8 backend with SQLite and a React frontend using Material UI.
 
 ---
 
-## 📦 Tecnologias Utilizadas
+## 📦 Technologies Used
 
 - ASP.NET Core 8 (Web API)
 - Entity Framework Core + SQLite
@@ -17,53 +17,53 @@ Inclui backend em .NET 8 com SQLite e frontend em React + Material UI.
 
 ---
 
-## ▶️ Como Rodar com Docker Compose
+## ▶️ How to Run with Docker Compose
 
-Pré-requisitos: Docker e Docker Compose instalados.
+Prerequisites: Docker and Docker Compose installed.
 
 ```bash
 docker-compose up --build
 ```
 
-### Acessos:
+### Access URLs:
 
 - 🔹 API (Swagger): [http://localhost:5000/swagger](http://localhost:5000/swagger)
 - 🔹 Frontend (SPA): [http://localhost:5173](http://localhost:5173)
 
 ---
 
-## ✅ Funcionalidades
+## ✅ Features
 
-- Cadastro de movimentação de estoque
-  - Valida se produto existe
-  - Impede estoque negativo
-- Relatório de estoque por data
-  - Filtro por código de produto opcional
-- Mensagens de feedback via `Snackbar`
-- Testes unitários e de integração
+- Register stock movements
+  - Validates if the product exists
+  - Prevents negative stock
+- Stock report by date
+  - Optional filter by product code
+- User feedback via `Snackbar`
+- Unit and integration tests
 
 ---
 
-## 📂 Estrutura de Pastas
+## 📂 Folder Structure
 
 ```
 InventoryControl/
 ├── BackEnd/
 │   ├── InventoryControl.API/       # Web API
-│   ├── InventoryControl.Domain/    # Entidades, enums
-│   ├── InventoryControl.Infra/     # DbContext, Seed
-│   ├── InventoryControl.Service/   # Lógica de negócio
-│   └── InventoryControl.Test/      # Testes (xUnit)
-│   └── Dockerfile                  # Build da API
+│   ├── InventoryControl.Domain/    # Entities, enums
+│   ├── InventoryControl.Infra/     # DbContext, Seeder
+│   ├── InventoryControl.Service/   # Business logic
+│   ├── InventoryControl.Test/      # Tests (xUnit)
+│   └── Dockerfile                  # API Docker build
 ├── FrontEnd/
-│   ├── Dockerfile                  # Build do frontend
+│   ├── Dockerfile                  # Frontend Docker build
 │   └── src/                        # React SPA
-├── docker-compose.yml              # Orquestra tudo
+├── docker-compose.yml              # Orchestration
 ```
 
 ---
 
-## 🛠️ Como Rodar os Testes
+## 🛠️ Running Tests
 
 ```bash
 cd BackEnd/InventoryControl.Test
