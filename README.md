@@ -21,7 +21,10 @@ Includes a .NET 8 backend with SQLite and a React frontend using Material UI.
 
 Prerequisites: Docker and Docker Compose installed.
 
+Navigate to the project root folder (where the `docker-compose.yml` file is located):
+
 ```bash
+cd InventoryControl
 docker-compose up --build
 ```
 
