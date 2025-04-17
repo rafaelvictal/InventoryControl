@@ -52,3 +52,5 @@ TestResults/
 # === OS ===
 .DS_Store
 Thumbs.db
+*.vsidx
+/BackEnd/.vs
