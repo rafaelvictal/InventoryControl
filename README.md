@@ -2,6 +2,7 @@
 
 A simple inventory control system.  
 Includes a .NET 8 backend with SQLite and a React frontend using Material UI.
+
 ---
 
 [![Build Status](https://github.com/rafaelvictal/InventoryControl/actions/workflows/build.yml/badge.svg)](https://github.com/rafaelvictal/InventoryControl/actions)
