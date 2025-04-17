@@ -1,3 +1,4 @@
+[![Build Status](https://github.com/rafaelvictal/InventoryControl/actions/workflows/dotnet.yml/badge.svg)](https://github.com/rafaelvictal/InventoryControl/actions)
 # Inventory Control System
 
 A simple inventory control system.  
