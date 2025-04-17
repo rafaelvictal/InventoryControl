@@ -93,6 +93,7 @@ export default function MovementForm() {
       <TextField
         label="Quantity"
         type="number"
+        inputProps={{ min: 1, max: 9999 }}
         fullWidth
         margin="normal"
         {...register("quantity")}
