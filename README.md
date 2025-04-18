@@ -30,10 +30,10 @@ Prerequisites: Docker and Docker Compose installed.
 docker-compose up --build
 ```
 
-### Access URLs:
+### Access the URLs:
 
-🔹 API (Swagger): [http://localhost:5000/swagger](http://localhost:5000/swagger)
-🔹 Frontend (SPA): [http://localhost:5173](http://localhost:5173)
+-🔹 API (Swagger): [http://localhost:5000/swagger](http://localhost:5000/swagger)
+-🔹 Frontend (SPA): [http://localhost:5173](http://localhost:5173)
 
 ---
 
