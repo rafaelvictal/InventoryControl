@@ -13,7 +13,7 @@ namespace InventoryControl.API.Requests
         [RegularExpression("Inbound|Outbound")]
         public string Type { get; set; } = null!;
 
-        [Range(1, int.MaxValue)]
+        [Range(1, 9999)]
         public int Quantity { get; set; }
     }
 }

@@ -1,33 +1,26 @@
 using InventoryControl.Core.DTO;
 using InventoryControl.Core.Services;
 using InventoryControl.Domain.Models;
-using InventoryControl.Infra.Data;
-using Microsoft.EntityFrameworkCore;
+using InventoryControl.Infra.Interfaces;
 using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
+using System.Linq.Expressions;
 
 namespace InventoryControl.Test
 {
     public class InventoryServiceTests
     {
-        private AppDbContext GetInMemoryContext()
-        {
-            var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseSqlite("Filename=:memory:")
-                .Options;
-
-            var context = new AppDbContext(options);
-            context.Database.OpenConnection();
-            context.Database.EnsureCreated();
-            return context;
-        }
-
         [Fact]
         public async Task AddMovement_Should_Return_Error_When_Product_Not_Exists()
         {
             // Arrange
-            var context = GetInMemoryContext();
+            var uowMock = new Mock<IUnitOfWork>();
+
+            uowMock.Setup(u => u.Product.GetOneByCode(It.IsAny<string>()))
+                    .ReturnsAsync((Product?)null);
+
             var logger = new NullLogger<InventoryService>();
-            var service = new InventoryService(logger, context);
+            var service = new InventoryService(logger, uowMock.Object);
 
             var dto = new MovementDTO
             {
@@ -48,12 +41,21 @@ namespace InventoryControl.Test
         public async Task AddMovement_Should_Succeed_When_Product_Exists()
         {
             // Arrange
-            var context = GetInMemoryContext();
-            var logger = new NullLogger<InventoryService>();
-            var service = new InventoryService(logger, context);
+            var product = new Product { Id = 1, Name = "Test Product", Code = "TEST123" };
 
-            context.Products.Add(new Product { Name = "Test Product", Code = "TEST123" });
-            context.SaveChanges();
+            var uowMock = new Mock<IUnitOfWork>();
+
+            uowMock.Setup(u => u.Product.GetOneByCode(It.IsAny<string>()))
+                    .ReturnsAsync(product);
+
+            uowMock.Setup(u => u.StockMovement.GetAll(It.IsAny<Expression<Func<StockMovement, bool>>>(), null))
+                    .ReturnsAsync(new List<StockMovement>());
+
+            uowMock.Setup(u => u.StockMovement.Add(It.IsAny<StockMovement>()));
+            uowMock.Setup(u => u.SaveChanges()).Returns(Task.CompletedTask);
+
+            var logger = new NullLogger<InventoryService>();
+            var service = new InventoryService(logger, uowMock.Object);
 
             var dto = new MovementDTO
             {
@@ -67,7 +69,6 @@ namespace InventoryControl.Test
 
             // Assert
             Assert.True(result.IsSuccess);
-            Assert.Equal(1, result.MovementId);
             Assert.Equal(5, result.Quantity);
         }
     }

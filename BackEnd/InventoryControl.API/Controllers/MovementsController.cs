@@ -51,6 +51,13 @@ namespace InventoryControl.API.Controllers
         {
             _logger.LogInformation("Report-Start");
 
+            if (date == default)
+            {
+                var msg = "Query parameter 'date' is required.";
+                _logger.LogWarning(msg);
+                return BadRequest(msg);
+            }
+
             var result = await _service.GenerateReportAsync(date, code);
 
             if (!result.IsSucess)
@@ -61,7 +68,7 @@ namespace InventoryControl.API.Controllers
 
             _logger.LogInformation("Report-End-Sucess");
 
-            return Ok(result.StockReports);            
+            return Ok(result.StockReports);
         }
     }
 }

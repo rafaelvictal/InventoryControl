@@ -49,12 +49,13 @@ namespace InventoryControl.Test
             using var scope = scopeFactory.CreateScope();
 
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            db.Products.Add(new Product { Name = "API Test Product", Code = "API123" });
+            var code = $"API-{Guid.NewGuid().ToString().Substring(0, 8)}";
+            db.Products.Add(new Product { Name = "API Test Product", Code = code });
             db.SaveChanges();
 
             var payload = new
             {
-                productCode = "API123",
+                productCode = code,
                 type = "Inbound",
                 quantity = 10
             };

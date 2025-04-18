@@ -1,30 +1,29 @@
 using InventoryControl.Domain.Models;
 using InventoryControl.Core.DTO;
-using InventoryControl.Infra.Data;
-using Microsoft.EntityFrameworkCore;
 using InventoryControl.Core.Extensions;
 using InventoryControl.Core.Results;
 using InventoryControl.Core.Interfaces;
 using Microsoft.Extensions.Logging;
+using InventoryControl.Infra.Interfaces;
 
 namespace InventoryControl.Core.Services;
 
 public class InventoryService : IInventoryService
 {
     private readonly ILogger<InventoryService> _logger;
-    private readonly AppDbContext _context;
+    private readonly IUnitOfWork _uow;
 
-    public InventoryService(ILogger<InventoryService> logger, AppDbContext context)
+    public InventoryService(ILogger<InventoryService> logger, IUnitOfWork uow)
     {
         _logger = logger;
-        _context = context;
+        _uow = uow;
     }
 
     public async Task<MovementResult> AddMovementAsync(MovementDTO dto)
     {
         try
         {
-            var product = await GetProductByCodeAsync(dto.ProductCode);
+            var product = await _uow.Product.GetOneByCode(dto.ProductCode);
 
             if (product == null) return MovementResult.Fail(Constants.Messages.ProductNotFound);
 
@@ -37,8 +36,8 @@ public class InventoryService : IInventoryService
             }
 
             var movement = dto.toModel(product.Id);
-            _context.Movements.Add(movement);
-            await _context.SaveChangesAsync();
+            await _uow.StockMovement.Add(movement);
+            await _uow.SaveChanges();
 
             return MovementResult.Sucess(movement.Id, movement.Quantity);
         }
@@ -54,12 +53,11 @@ public class InventoryService : IInventoryService
     {
         try
         {
-            var products = _context.Products.AsQueryable();
+            var products = string.IsNullOrEmpty(productCode)
+                ? await _uow.Product.GetAll(includeProperties: "Movements")
+                : await _uow.Product.GetAll(p => p.Code == productCode, includeProperties: "Movements");
 
-            if (!string.IsNullOrEmpty(productCode))
-                products = products.Where(p => p.Code == productCode);
-
-            var stockReport = await products.Select(p => new StockReportDTO
+            var stockReport = products.Select(p => new StockReportDTO
             {
                 ProductName = p.Name,
                 ProductCode = p.Code,
@@ -69,7 +67,7 @@ public class InventoryService : IInventoryService
                 Outbound = p.Movements
                     .Where(m => m.Type == Constants.MovementTypes.Outbound && m.CreatedAt.Date == date.Date)
                     .Sum(m => m.Quantity)
-            }).ToListAsync();
+            }).ToList();
 
             return ReportResult.Sucess(stockReport);
         }
@@ -81,19 +79,16 @@ public class InventoryService : IInventoryService
         }
     }
 
-    private async Task<Product?> GetProductByCodeAsync(string code)
-    {
-        return await _context.Products.FirstOrDefaultAsync(p => p.Code == code);
-    }
-
     private async Task<int> CalculateBalanceAsync(int productId, DateTime? until = null)
     {
-        var query = _context.Movements.Where(m => m.ProductId == productId);
+        var query = await _uow.StockMovement.GetAll(m => m.ProductId == productId);
+
         if (until.HasValue)
             query = query.Where(m => m.CreatedAt.Date <= until.Value.Date);
 
-        var inbound = await query.Where(m => m.Type == Constants.MovementTypes.Inbound).SumAsync(m => m.Quantity);
-        var outbound = await query.Where(m => m.Type == Constants.MovementTypes.Outbound).SumAsync(m => m.Quantity);
+        var inbound = query.Where(m => m.Type == Constants.MovementTypes.Inbound).Sum(m => m.Quantity);
+        var outbound = query.Where(m => m.Type == Constants.MovementTypes.Outbound).Sum(m => m.Quantity);
+
         return inbound - outbound;
     }
 }

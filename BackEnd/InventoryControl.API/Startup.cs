@@ -3,6 +3,7 @@ using InventoryControl.Infra.Data;
 using InventoryControl.Core.Services;
 using InventoryControl.Core.Interfaces;
 using InventoryControl.API.Middleware;
+using InventoryControl.Infra.Interfaces;
 
 namespace InventoryControl.API;
 
@@ -27,7 +28,8 @@ public class Startup
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite($"Data Source={dbPath}"));
 
-        services.AddScoped<IInventoryService, InventoryService>();
+        services.AddScoped<IInventoryService, InventoryService>();        
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddCors(options =>
         {
