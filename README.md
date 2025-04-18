@@ -23,17 +23,17 @@ Includes a .NET 8 backend with SQLite and a React frontend using Material UI.
 
 Prerequisites: Docker and Docker Compose installed.
 
-Navigate to the project root folder (where the `docker-compose.yml` file is located):
-
+- Navigate to the project root folder (where the `docker-compose.yml` file is located).
+- Run a Docker Compose:
+  
 ```bash
-cd InventoryControl
 docker-compose up --build
 ```
 
 ### Access URLs:
 
-- 🔹 API (Swagger): [http://localhost:5000/swagger](http://localhost:5000/swagger)
-- 🔹 Frontend (SPA): [http://localhost:5173](http://localhost:5173)
+🔹 API (Swagger): [http://localhost:5000/swagger](http://localhost:5000/swagger)
+🔹 Frontend (SPA): [http://localhost:5173](http://localhost:5173)
 
 ---
 
