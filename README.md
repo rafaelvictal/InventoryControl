@@ -32,8 +32,8 @@ docker-compose up --build
 
 ### Access the URLs:
 
--🔹 API (Swagger): [http://localhost:5000/swagger](http://localhost:5000/swagger)
--🔹 Frontend (SPA): [http://localhost:5173](http://localhost:5173)
+- 🔹 BackEnd API (Swagger): [http://localhost:5000/swagger](http://localhost:5000/swagger)
+- 🔹 Frontend (SPA): [http://localhost:5173](http://localhost:5173)
 
 ---
 
